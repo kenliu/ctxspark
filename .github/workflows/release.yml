@@ -32,11 +32,14 @@ jobs:
       - name: Build
         run: cargo build --release --target ${{ matrix.target }}
 
+      - name: Rename binary
+        run: cp target/${{ matrix.target }}/release/ctxspark ${{ matrix.artifact }}
+
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.artifact }}
-          path: target/${{ matrix.target }}/release/ctxspark
+          path: ${{ matrix.artifact }}
 
   release:
     name: Create Release
@@ -51,7 +54,7 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           files: |
-            ctxspark-macos-arm64/ctxspark
-            ctxspark-macos-x86_64/ctxspark
-            ctxspark-linux-x86_64/ctxspark
+            ctxspark-macos-arm64/ctxspark-macos-arm64
+            ctxspark-macos-x86_64/ctxspark-macos-x86_64
+            ctxspark-linux-x86_64/ctxspark-linux-x86_64
           fail_on_unmatched_files: true
